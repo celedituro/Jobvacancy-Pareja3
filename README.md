@@ -18,6 +18,7 @@ Follow these steps to initialize the PostgreSQL databases:
 1. Run **_RACK_ENV=test bundle exec rake_**, to run all tests and ensure everything is properly setup
 1. Run **_RACK_ENV=development bundle exec rake db:migrate db:seed_**, to setup the development database
 1. Run **_bundle exec padrino start -h 0.0.0.0_**, to start the application
+1. Run **_RACK_ENV=test bundle exec rake billing_acceptance_tests_** to run @billing tags 
 
 For authenticating as an offerer you can use the credentials offerer@test.com / Passw0rd!
 
@@ -36,4 +37,26 @@ For authenticating as an offerer you can use the credentials offerer@test.com / 
 $ docker-compose run --rm webapp bundle exec rake db:migrate
 $ docker-compose up -d
 $ docker-compose exec webapp /bin/bash
+```
+
+### JSON Report Example 
+```json
+{
+    "items": [
+        {
+            "user_email": "ju...@test.com",
+            "subscription": "on-demand",
+            "active_offers_count": 0,
+            "amount_to_pay": 0.0
+        },
+        {
+            "user_email": "ju...@test.com",
+            "subscription": "on-demand",
+            "active_offers_count": 1,
+            "amount_to_pay": 10.0
+        }        
+    ],
+    "total_amount": 10.0,
+    "total_active_offers": 1
+}
 ```
