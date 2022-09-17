@@ -42,7 +42,6 @@ $ docker-compose run --rm webapp bundle exec rake db:migrate
 $ docker-compose up -d
 $ docker-compose exec webapp /bin/bash
 ```
-<<<<<<< HEAD
 
 ### JSON Report Example 
 ```json
@@ -65,5 +64,3 @@ $ docker-compose exec webapp /bin/bash
     "total_active_offers": 1
 }
 ```
-=======
->>>>>>> a7d4f13361d95f17cb6f472eba733afc571319a6
