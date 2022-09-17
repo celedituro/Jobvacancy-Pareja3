@@ -1,4 +1,5 @@
 require_relative '../models/user'
+require_relative '../models/on_demand_subscription'
 
 user_repository = UserRepository.new
 unless user_repository.all.count.positive?
