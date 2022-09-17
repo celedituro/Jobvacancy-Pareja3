@@ -7,5 +7,12 @@ describe OnDemandSubscription do
       on_demand_sub = described_class.new
       expect(on_demand_sub.amount_to_pay(job_offers)).to eq 0
     end
+
+    it 'should be 10 when one active offers' do
+      job_offers = []
+      job_offers.push(JobOffer.new(title: 'Programmer vacancy', is_active: true))
+      on_demand_sub = described_class.new
+      expect(on_demand_sub.amount_to_pay(job_offers)).to eq 10
+    end
   end
 end
