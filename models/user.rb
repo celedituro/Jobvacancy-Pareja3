@@ -1,7 +1,8 @@
 class User
   include ActiveModel::Validations
 
-  attr_accessor :id, :name, :email, :crypted_password, :job_offers, :updated_on, :created_on
+  attr_accessor :id, :name, :email, :crypted_password, :job_offers, :updated_on, :created_on,
+                :subscription
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
 
@@ -29,9 +30,14 @@ class User
     @job_offers = data[:job_offers]
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
+    @subscription = OnDemandSubscription.new
   end
 
   def has_password?(password)
     Crypto.decrypt(crypted_password) == password
+  end
+
+  def subscribe_to(subscription)
+    @subscription = subscription
   end
 end

@@ -1,11 +1,9 @@
 JobVacancy::App.controllers :reports, provides: [:json] do
   get :billing do
-    repo = JobOfferRepository.new
-    offer_counter = OfferCounter.new(repo)
-    report = {
-      month: '2022-09',
-      total_active_offers: offer_counter.count_active
-    }
+    job_repo = JobOfferRepository.new
+    user_repo = UserRepository.new
+    report_maker = ReportMaker.new(job_repo, user_repo)
+    report = report_maker.make_report
     return report.to_json
   end
 end
