@@ -9,7 +9,8 @@ class ReportMaker
   def make_report
     {
       items: [],
-      total_amount: 0.0
+      total_amount: 0.0,
+      total_active_offers: 0
     }
   end
 end

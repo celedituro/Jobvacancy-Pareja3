@@ -11,13 +11,22 @@ describe ReportMaker do
       expect(report.fetch(:items).length).to eq 0
     end
 
-    it 'should have a total_amount of 0.0 when any users' do
+    it 'should have a total_amount of 0.0 when no users' do
       job_repo = instance_double('offer_repo', all_active: [])
       user_repo = instance_double('user_repo', users: [])
       report_maker = described_class.new(job_repo, user_repo)
 
       report = report_maker.make_report
       expect(report.fetch(:total_amount)).to eq 0.0
+    end
+
+    it 'should have a total_active_offers of 0 when no users' do
+      job_repo = instance_double('offer_repo', all_active: [])
+      user_repo = instance_double('user_repo', users: [])
+      report_maker = described_class.new(job_repo, user_repo)
+
+      report = report_maker.make_report
+      expect(report.fetch(:total_active_offers)).to eq 0
     end
   end
 end
