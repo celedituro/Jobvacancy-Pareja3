@@ -19,7 +19,7 @@ Then('the total active offers is {int}') do |expected_active_offers|
 end
 
 Then('the total amount is {float}') do |_expected_total_amount|
-  pendiente
+  pending
 end
 
 Given('a user {string} with {string} subscription') do |user_email, _subscription_type|
