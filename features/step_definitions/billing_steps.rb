@@ -40,7 +40,7 @@ end
 
 Then('the amount to pay for the user {string} is {float}') do |user_email, expected_amount|
   @report_as_json['items'].each do |user|
-    expect([user_email]).to eq expected_amount if user['user_email'] == user_email
+    expect(user.fetch('amount_to_pay')).to eq expected_amount if user['user_email'] == user_email
   end
 end
 

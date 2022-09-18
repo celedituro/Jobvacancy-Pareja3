@@ -8,7 +8,7 @@ Feature: On Demand Billing Report
     Given 0 active offers
     When I get the billing report
     Then the amount to pay for the user "pepe@pepito.com" is 0.0
-    
+  
   @wip
   Scenario: on2 - One user with on-demand subscription with one offer
     Given the user "pepe@pepito.com" has 1 active offers

@@ -6,9 +6,25 @@ class ReportMaker
     @user_repo = user_repo
   end
 
+  def collect_items
+    items = []
+    return items if @user_repo.users.empty?
+
+    @user_repo.users.each do |user|
+      item = {
+        "user_email": user.email,
+        "subscription": user.subscription.name,
+        "active_offers_count": 0,
+        "amount_to_pay": user.subscription.amount_to_pay(user.job_offers)
+      }
+      items.push(item)
+    end
+    items
+  end
+
   def make_report
     {
-      items: [],
+      items: collect_items,
       total_amount: 0.0,
       total_active_offers: 0
     }

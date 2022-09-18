@@ -10,7 +10,7 @@ describe OnDemandSubscription do
 
     it 'should be 10 when one active offers' do
       job_offers = []
-      job_offers.push(JobOffer.new(title: 'Programmer vacancy', is_active: true))
+      job_offers.append(JobOffer.new(title: 'Programmer vacancy', is_active: true))
       on_demand_sub = described_class.new
       expect(on_demand_sub.amount_to_pay(job_offers)).to eq 10
     end

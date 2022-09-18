@@ -7,6 +7,10 @@ class UserRepository < BaseRepository
     load_object(row) unless row.nil?
   end
 
+  def users
+    load_collection dataset
+  end
+
   protected
 
   def changeset(user)

@@ -27,7 +27,11 @@ class User
                         else
                           Crypto.encrypt(data[:password])
                         end
-    @job_offers = data[:job_offers]
+    @job_offers = if data[:job_offers].nil?
+                    []
+                  else
+                    data[:job_offers]
+                  end
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
     @subscription = OnDemandSubscription.new
