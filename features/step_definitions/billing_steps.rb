@@ -40,7 +40,7 @@ end
 
 Then('the amount to pay for the user {string} is {float}') do |user_email, expected_amount|
   @report_as_json['items'].each do |user|
-    expect(user.fetch('amount_to_pay')).to eq expected_amount if user['user_email'] == user_email
+    expect(user.fetch('amount_to_pay')).to eq expected_amount if user.fetch('user_email') == user_email
   end
 end
 
@@ -52,8 +52,13 @@ Given('another user {string} with {string} susbcription') do |_user_email, _subs
   pending # Write code here that turns the phrase above into concrete actions
 end
 
-Given('the user {string} has {int} active offers') do |_user_email, _active_offer_count|
-  pending # Write code here that turns the phrase above into concrete actions
+Given('the user {string} has {int} active offers') do |user_email, active_offer_count|
+  @user = UserRepository.new.find_by_email(user_email)
+  (1..active_offer_count).each do |i|
+    @job_offer = JobOffer.new(title: "title_#{i}", is_active: true, user_id: @user.id)
+    @job_offer.owner = @user
+    JobOfferRepository.new.save @job_offer
+  end
 end
 
 Given('{int} inactive offers') do |_inactive_offer_count|

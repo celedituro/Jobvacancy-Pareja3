@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-def mock_repositories
-  job_repo = instance_double('offer_repo',
-                             all_active_by_id: [JobOffer.new(title: 'Programmer vacancy', is_active: true, user_id: 1)])
-  user_repo = instance_double('user_repo',
-                              users: [User.new(id: 1, name: 'Pepe', email: 'pepito@gmail.com', password: '1234567')])
+def mock
+  user = User.new(id: 1, email: 'pepito@gmail.com')
+  job = JobOffer.new(title: 'title', is_active: true, user_id: 1)
+  job_repo = instance_double('offer_repo', all_active: [job])
+  allow(job_repo).to receive(:find_by_owner).with(user).and_return([job])
+  user_repo = instance_double('user_repo', users: [user])
   [job_repo, user_repo]
 end
 
@@ -29,8 +30,8 @@ describe ReportMaker do
     end
 
     it 'should have a total_active_offers of 0 when no users' do
-      job_repo =
-        user_repo = instance_double('user_repo', users: [])
+      job_repo = instance_double('offer_repo', all_active: [])
+      user_repo = instance_double('user_repo', users: [])
       report_maker = described_class.new(job_repo, user_repo)
 
       report = report_maker.make_report
@@ -38,11 +39,27 @@ describe ReportMaker do
     end
 
     it 'should have one item list having one user' do
-      repos = mock_repositories
-      report_maker = described_class.new(repos[0], repos[1])
+      mocks = mock
+      report_maker = described_class.new(mocks[0], mocks[1])
 
       report = report_maker.make_report
       expect(report.fetch(:items).length).to eq 1
+    end
+
+    it 'should have one item list having one active offer' do
+      mocks = mock
+      report_maker = described_class.new(mocks[0], mocks[1])
+
+      report = report_maker.make_report
+      expect(report.fetch(:items)[0].fetch(:active_offers_count)).to eq 1
+    end
+
+    it 'should pay $10 having one active offer on-demand subscription' do
+      mocks = mock
+      report_maker = described_class.new(mocks[0], mocks[1])
+
+      report = report_maker.make_report
+      expect(report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 10.0
     end
   end
 end
