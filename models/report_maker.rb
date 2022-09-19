@@ -24,10 +24,18 @@ class ReportMaker
     items
   end
 
+  def total(items)
+    total = 0.0
+    items.map { |item| total += item.fetch(:amount_to_pay) }
+    total
+  end
+
   def make_report
+    items = collect_items
+    total = total(items)
     {
-      items: collect_items,
-      total_amount: 0.0,
+      items: items,
+      total_amount: total,
       total_active_offers: @offer_counter.count_active
     }
   end

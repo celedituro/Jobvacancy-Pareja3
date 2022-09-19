@@ -20,7 +20,6 @@ Feature: On Demand Billing Report
     When I get the billing report
     Then the billing for this user is 30.0
 
-  @wip
   Scenario: on4 - Two users with on-demand subscription with two offers each
     Given the user "pepe@pepito.com"
     And 2 active offers
@@ -30,6 +29,7 @@ Feature: On Demand Billing Report
     Then the total amount is 40.0
     And the total active offers are 4
 
+  @wip
   Scenario: on5 - Two users with on-demand subscription without offers
     Given the user "pepe@pepito.com"
     And 0 active offers
