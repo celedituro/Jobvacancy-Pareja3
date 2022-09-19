@@ -23,6 +23,7 @@ Then('the total amount is {float}') do |_expected_total_amount|
 end
 
 Given('a user {string} with {string} subscription') do |user_email, _subscription_type|
+  UserRepository.new.delete_all
   @user = User.create(user_email, user_email, 'somePassword!')
   @subscription = OnDemandSubscription.new
   @user.subscribe_to(@subscription)
@@ -31,7 +32,7 @@ end
 
 Given('{int} active offers') do |offer_count|
   JobOfferRepository.new.delete_all
-  (0..offer_count).each do |_i|
+  (1..offer_count).each do |_i|
     @job_offer = JobOffer.new(title: 'title', is_active: true)
     @job_offer.owner = UserRepository.new.first
     JobOfferRepository.new.save @job_offer
@@ -61,12 +62,19 @@ Given('the user {string} has {int} active offers') do |user_email, active_offer_
   end
 end
 
-Given('{int} inactive offers') do |_inactive_offer_count|
-  pending # Write code here that turns the phrase above into concrete actions
+Given('{int} inactive offers') do |inactive_offer_count|
+  (1..inactive_offer_count).each do |i|
+    @job_offer = JobOffer.new(title: "inactive_#{i}", is_active: false)
+    @job_offer.owner = UserRepository.new.first
+    JobOfferRepository.new.save @job_offer
+  end
 end
 
-Then('the billing for this user is {float}') do |_expected_amount|
-  pending # Write code here that turns the phrase above into concrete actions
+Then('the billing for this user is {float}') do |expected_amount|
+  @user = UserRepository.new.first
+  @report_as_json['items'].each do |user|
+    expect(user.fetch('amount_to_pay')).to eq expected_amount if user.fetch('user_email') == @user.email
+  end
 end
 
 Given('the user {string}') do |_user_email|
