@@ -28,7 +28,7 @@ class ReportMaker
     {
       items: collect_items,
       total_amount: 0.0,
-      total_active_offers: 0
+      total_active_offers: @offer_counter.count_active
     }
   end
 end
