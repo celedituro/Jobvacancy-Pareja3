@@ -3,7 +3,8 @@ class SubscriptionRepository
     @subscriptions = {
       'on-demand' => OnDemandFactory.new,
       'professional' => ProfessionalFactory.new,
-      'corporate' => CorporateFactory.new
+      'corporate' => CorporateFactory.new,
+      'corporative' => CorporateFactory.new
     }
   end
 

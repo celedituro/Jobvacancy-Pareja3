@@ -44,7 +44,7 @@ end
 
 class CorporateSubscription < Subscription
   PRICE = 80.0
-  NAME = 'corporate'.freeze
+  NAME = 'corporative'.freeze
 
   def name
     NAME
