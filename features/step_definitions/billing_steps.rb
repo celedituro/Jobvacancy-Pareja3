@@ -26,7 +26,7 @@ Given('a user {string} with {string} subscription') do |user_email, subscription
   UserRepository.new.delete_all
   @user = User.create(user_email, user_email, 'somePassword!')
   @subscription = SubscriptionRepository.new.create_by_subscription(subscription_type)
-  @user.subscribe_to(@subscription)
+  @user.subscription = @subscription
   UserRepository.new.save(@user)
 end
 
@@ -51,7 +51,7 @@ end
 Given('another user {string} with {string} susbcription') do |user_email, _subscription_type|
   @another_user = User.create(user_email, user_email, 'somePassword!')
   @subscription = OnDemandSubscription.new
-  @another_user.subscribe_to(@subscription)
+  @another_user.subscription = @subscription
   UserRepository.new.save(@another_user)
 end
 
@@ -86,7 +86,7 @@ end
 Given('another user with {string} susbcription') do |_subscription_type|
   @other_user = User.create('pepe@hotmail.com', 'pepe@hotmail.com', 'somePassword!')
   @other_subscription = OnDemandSubscription.new
-  @other_user.subscribe_to(@subscription)
+  @other_user.subscription = @other_subscription
   UserRepository.new.save(@other_user)
 end
 

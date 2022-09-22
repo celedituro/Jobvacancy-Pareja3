@@ -84,5 +84,13 @@ describe ReportMaker do
 
       expect(report_maker.make_report.fetch(:total_amount)).to eq 40.0
     end
+
+    it 'should pay $30 having one active offer professional subscription' do
+      user = User.new(id: 1, email: 'pepito@gmail.com')
+      user.subscription = ProfessionalSubscription.new
+      mocks = mock(user)
+
+      expect(described_class.new(mocks[0], mocks[1]).make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 30.0
+    end
   end
 end

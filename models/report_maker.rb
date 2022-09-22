@@ -13,6 +13,7 @@ class ReportMaker
 
     @user_repo.users.each do |user|
       user.job_offers = @job_repo.find_by_owner(user)
+      # user.subscription = SubscriptionRepository.new.create_by_subscription(user.subscription.name)
       item = {
         "user_email": user.email,
         "subscription": user.subscription.name,

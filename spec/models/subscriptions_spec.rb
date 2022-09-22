@@ -20,10 +20,10 @@ describe Subscription do
 
   describe ProfessionalSubscription do
     describe 'amount_to_pay' do
-      it 'should be 0.0 when no active offers' do
+      it 'should be 30.0 when no active offers' do
         job_offers = []
         professional_sub = described_class.new
-        expect(professional_sub.amount_to_pay(job_offers)).to eq 0.0
+        expect(professional_sub.amount_to_pay(job_offers)).to eq 30.0
       end
 
       it 'should be 30.0 when one active offers' do
