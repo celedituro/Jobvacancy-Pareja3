@@ -1,7 +1,8 @@
 class SubscriptionRepository
   def initialize
     @subscriptions = {
-      'on-demand' => OnDemandFactory.new
+      'on-demand' => OnDemandFactory.new,
+      'professional' => ProfessionalFactory.new
     }
   end
 

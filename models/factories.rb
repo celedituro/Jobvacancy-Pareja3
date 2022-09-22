@@ -9,3 +9,9 @@ class OnDemandFactory < Factory
     OnDemandSubscription.new
   end
 end
+
+class ProfessionalFactory < Factory
+  def create
+    ProfessionalSubscription.new
+  end
+end
