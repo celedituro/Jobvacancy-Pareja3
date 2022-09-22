@@ -22,10 +22,10 @@ Then('the total amount is {float}') do |expected_total_amount|
   expect(@report_as_json['total_amount']).to eq expected_total_amount
 end
 
-Given('a user {string} with {string} subscription') do |user_email, _subscription_type|
+Given('a user {string} with {string} subscription') do |user_email, subscription_type|
   UserRepository.new.delete_all
   @user = User.create(user_email, user_email, 'somePassword!')
-  @subscription = OnDemandSubscription.new
+  @subscription = SubscriptionRepository.new.create_by_subscription(subscription_type)
   @user.subscribe_to(@subscription)
   UserRepository.new.save(@user)
 end
