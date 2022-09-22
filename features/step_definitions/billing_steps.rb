@@ -48,9 +48,9 @@ Then('the total active offers are {int}') do |expected_offer_count|
   expect(@report_as_json['total_active_offers']).to eq expected_offer_count
 end
 
-Given('another user {string} with {string} susbcription') do |user_email, _subscription_type|
+Given('another user {string} with {string} susbcription') do |user_email, subscription_type|
   @another_user = User.create(user_email, user_email, 'somePassword!')
-  @subscription = OnDemandSubscription.new
+  @subscription = SubscriptionRepository.new.create_by_subscription(subscription_type)
   @another_user.subscription = @subscription
   UserRepository.new.save(@another_user)
 end
@@ -90,6 +90,8 @@ Given('another user with {string} susbcription') do |_subscription_type|
   UserRepository.new.save(@other_user)
 end
 
-Then('the amount to pay for the user {string} is {float}.') do |_user_email, _expected_amount|
-  pending # Write code here that turns the phrase above into concrete actions
+Then('the amount to pay for the user {string} is {float}.') do |user_email, expected_amount|
+  @report_as_json['items'].each do |user|
+    expect(user.fetch('amount_to_pay')).to eq expected_amount if user.fetch('user_email') == user_email
+  end
 end
