@@ -15,3 +15,9 @@ class ProfessionalFactory < Factory
     ProfessionalSubscription.new
   end
 end
+
+class CorporateFactory < Factory
+  def create
+    CorporateSubscription.new
+  end
+end

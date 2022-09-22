@@ -41,3 +41,16 @@ class ProfessionalSubscription < Subscription
     amount + PRICE
   end
 end
+
+class CorporateSubscription < Subscription
+  PRICE = 80.0
+  NAME = 'corporate'.freeze
+
+  def name
+    NAME
+  end
+
+  def amount_to_pay(_job_offers)
+    PRICE
+  end
+end

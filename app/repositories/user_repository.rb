@@ -8,11 +8,7 @@ class UserRepository < BaseRepository
   end
 
   def users
-    users = load_collection dataset
-    users.each do |user|
-      p user.subscription
-    end
-    users
+    load_collection dataset
   end
 
   protected

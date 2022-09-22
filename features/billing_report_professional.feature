@@ -7,7 +7,7 @@ Feature: Professional Billing Report
     When I get the billing report
     Then the amount to pay for the user "pepe@pepito.com" is 30.0
     And the total active offers are 0
-  @wip
+
   Scenario: p2 - professional subscription with one offers
     Given a user "pepe@pepito.com" with "professional" subscription
     And 1 active offers
