@@ -49,7 +49,7 @@ describe ReportMaker do
     it 'should have an empty item list when no users' do
       job_repo = instance_double('offer_repo', all_active: [])
       user_repo = instance_double('user_repo', users: [])
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       report = report_maker.make_report
       expect(report.fetch(:items).length).to eq 0
@@ -58,7 +58,7 @@ describe ReportMaker do
     it 'should have a total_amount of 0.0 when no users' do
       job_repo = instance_double('offer_repo', all_active: [])
       user_repo = instance_double('user_repo', users: [])
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       report = report_maker.make_report
       expect(report.fetch(:total_amount)).to eq 0.0
@@ -67,7 +67,7 @@ describe ReportMaker do
     it 'should have a total_active_offers of 0 when no users' do
       job_repo = instance_double('offer_repo', all_active: [])
       user_repo = instance_double('user_repo', users: [])
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       report = report_maker.make_report
       expect(report.fetch(:total_active_offers)).to eq 0
@@ -77,7 +77,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 1)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:items).length).to eq 1
     end
@@ -86,7 +86,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 1)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:items)[0].fetch(:active_offers_count)).to eq 1
     end
@@ -95,7 +95,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 1)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 10.0
     end
@@ -104,7 +104,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 4)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:total_active_offers)).to eq 4
     end
@@ -113,7 +113,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 4)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:total_amount)).to eq 40.0
     end
@@ -122,7 +122,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com', subscription: 'professional')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 1)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 30.0
     end
@@ -131,7 +131,7 @@ describe ReportMaker do
       user = User.new(id: 1, email: 'pepito@gmail.com', subscription: 'corporate')
       user_repo = instance_double('user_repo', users: [user])
       job_repo = mock_multiple_job_offers_repo(user, 1)
-      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo))
+      report_maker = described_class.new(job_repo, user_repo, OfferCounter.new(job_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 80.0
     end
@@ -139,7 +139,7 @@ describe ReportMaker do
     it 'should have a total_amout of 30.0 with three on-demand subs' do
       users_repo = mock_multiple_users(3, 'on-demand')
       offer_repo = mock_multiple_job_offers_repo_from_users(1, users_repo.users)
-      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo))
+      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:total_amount)).to eq 30.0
     end
@@ -147,7 +147,7 @@ describe ReportMaker do
     it 'should have 4 total_active_offers having 4 users with 1 active offer each' do
       users_repo = mock_multiple_users(4, 'on-demand')
       offer_repo = mock_multiple_job_offers_repo_from_users(1, users_repo.users)
-      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo))
+      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:total_active_offers)).to eq 4
     end
@@ -155,7 +155,7 @@ describe ReportMaker do
     it 'should have a total_amout of 110.0 with three on-demand subs' do
       users_repo = mock_multiple_users_multiple_subs(1, %w[professional corporative])
       offer_repo = mock_multiple_job_offers_repo_from_users(2, users_repo.users)
-      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo))
+      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:total_amount)).to eq 110.0
     end
@@ -163,7 +163,7 @@ describe ReportMaker do
     it 'should have 3 active_offers_count for pepito@gmail.com user' do
       users_repo = mock_multiple_users(2, 'on-demand')
       offer_repo = mock_multiple_job_offers_repo_from_users(3, users_repo.users)
-      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo))
+      report_maker = described_class.new(offer_repo, users_repo, OfferCounter.new(offer_repo), AmountCounter.new)
 
       expect(report_maker.make_report.fetch(:items)[0].fetch(:active_offers_count)).to eq 3
     end

@@ -1,10 +1,11 @@
 class ReportMaker
   attr_accessor :job_repo, :user_repo
 
-  def initialize(job_repo, user_repo, offer_counter)
+  def initialize(job_repo, user_repo, offer_counter, amount_counter)
     @job_repo = job_repo
     @user_repo = user_repo
     @offer_counter = offer_counter
+    @amount_counter = amount_counter
   end
 
   def collect_items
@@ -24,18 +25,11 @@ class ReportMaker
     items
   end
 
-  def total(items)
-    total = 0.0
-    items.map { |item| total += item.fetch(:amount_to_pay) }
-    total
-  end
-
   def make_report
     items = collect_items
-    total = total(items)
     {
       items: items,
-      total_amount: total,
+      total_amount: @amount_counter.total_amount(items),
       total_active_offers: @offer_counter.count_active
     }
   end
