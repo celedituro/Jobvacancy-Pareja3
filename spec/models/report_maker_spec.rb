@@ -84,12 +84,12 @@ describe ReportMaker do
       expect(report_maker.make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 30.0
     end
 
-    xit 'should pay 80.0 having one active offer corporate subscription' do
-      user = User.new(id: 1, email: 'pepito@gmail.com')
-      user.subscription = CorporateSubscription.new
-      mocks = mock(user)
+    it 'should pay 80.0 having 1 active offer with corporate subscription' do
+      user = User.new(id: 1, email: 'pepito@gmail.com', subscription: 'corporate')
+      user_repo = instance_double('user_repo', users: [user])
+      report_maker = described_class.new(mock_multiple_job_offers_repo(user, 1), user_repo)
 
-      expect(described_class.new(mocks[0], mocks[1]).make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 80.0
+      expect(report_maker.make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 80.0
     end
   end
 end
