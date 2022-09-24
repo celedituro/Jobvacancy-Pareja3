@@ -82,7 +82,7 @@ describe ReportMaker do
       expect(report_maker.make_report.fetch(:items)[0].fetch(:amount_to_pay)).to eq 10.0
     end
 
-    it 'should have 4 active_offers_count having 4 active offers' do
+    it 'should have 4 total_active_offers having 4 active offers' do
       user = User.new(id: 1, email: 'pepito@gmail.com')
       user_repo = instance_double('user_repo', users: [user])
       report_maker = described_class.new(mock_multiple_job_offers_repo(user, 4), user_repo)
@@ -120,6 +120,14 @@ describe ReportMaker do
       report_maker = described_class.new(offer_repo, users_repo)
 
       expect(report_maker.make_report.fetch(:total_amount)).to eq 30.0
+    end
+
+    it 'should have 4 total_active_offers having 4 users with 1 active offer each' do
+      users_repo = mock_multiple_users(4, 'on-demand')
+      offer_repo = mock_multiple_job_offers_repo_from_users(1, users_repo.users)
+      report_maker = described_class.new(offer_repo, users_repo)
+
+      expect(report_maker.make_report.fetch(:total_active_offers)).to eq 4
     end
   end
 end
