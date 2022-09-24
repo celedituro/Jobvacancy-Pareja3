@@ -1,10 +1,10 @@
 class ReportMaker
   attr_accessor :job_repo, :user_repo
 
-  def initialize(job_repo, user_repo)
+  def initialize(job_repo, user_repo, offer_counter)
     @job_repo = job_repo
     @user_repo = user_repo
-    @offer_counter = OfferCounter.new(job_repo)
+    @offer_counter = offer_counter
   end
 
   def collect_items
