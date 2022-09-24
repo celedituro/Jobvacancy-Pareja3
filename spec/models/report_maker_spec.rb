@@ -15,6 +15,16 @@ def mock_multiple_users(num_users, sub_type)
   user_repo
 end
 
+def mock_multiple_users_multiple_subs(num_users, sub_types)
+  user_repo = instance_double('user_repo', users: [])
+  sub_types.length.times do |type|
+    num_users.times do |user|
+      user_repo.users.push(User.new(id: user, email: "user_#{user}@gmail.com", subscription: sub_types[type]))
+    end
+  end
+  user_repo
+end
+
 def mock_multiple_job_offers_repo_from_users(num_jobs, users)
   job_repo = instance_double('offer_repo', all_active: [])
   users.each do |user|
@@ -128,6 +138,14 @@ describe ReportMaker do
       report_maker = described_class.new(offer_repo, users_repo)
 
       expect(report_maker.make_report.fetch(:total_active_offers)).to eq 4
+    end
+
+    it 'should have a total_amout of 110.0 with three on-demand subs' do
+      users_repo = mock_multiple_users_multiple_subs(1, %w[professional corporative])
+      offer_repo = mock_multiple_job_offers_repo_from_users(2, users_repo.users)
+      report_maker = described_class.new(offer_repo, users_repo)
+
+      expect(report_maker.make_report.fetch(:total_amount)).to eq 110.0
     end
   end
 end
