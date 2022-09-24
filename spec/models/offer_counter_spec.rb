@@ -14,12 +14,5 @@ describe OfferCounter do
       counter = described_class.new(repo)
       expect(counter.count_active).to eq 1
     end
-
-    it 'should be 1 when one inactive offers' do
-      job = JobOffer.new(title: 'title', is_active: false, user_id: 1)
-      repo = instance_double('offer_repo', all_active: [job])
-      counter = described_class.new(repo)
-      expect(counter.count_active).to eq 1
-    end
   end
 end
