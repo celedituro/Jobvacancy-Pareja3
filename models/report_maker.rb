@@ -16,7 +16,7 @@ class ReportMaker
       item = {
         "user_email": user.email,
         "subscription": user.subscription.name,
-        "active_offers_count": @offer_counter.count_active,
+        "active_offers_count": @offer_counter.count_active_by_id(user.id),
         "amount_to_pay": user.subscription.amount_to_pay(user.job_offers)
       }
       items.push(item)

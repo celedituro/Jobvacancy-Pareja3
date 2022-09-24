@@ -7,7 +7,7 @@ class OfferCounter
     @repo.all_active.size
   end
 
-  def count_active_id(id)
+  def count_active_by_id(id)
     @repo.all_active_by_id(id).size
   end
 end

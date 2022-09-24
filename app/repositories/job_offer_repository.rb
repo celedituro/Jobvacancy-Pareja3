@@ -19,6 +19,10 @@ class JobOfferRepository < BaseRepository
     end
   end
 
+  def all_active_by_id(id)
+    load_collection dataset.where(user_id: id, is_active: true)
+  end
+
   def search_by_title(title)
     load_collection dataset.where(Sequel.like(:title, "%#{title}%"))
   end
